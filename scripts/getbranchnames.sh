@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 red() { echo "$(tput setaf 1)$*$(tput setaf 7)"; }
 green() { echo "$(tput setaf 2)$*$(tput setaf 7)"; }
 white() { echo "$(tput setaf 7)$*$(tput setaf 7)"; }

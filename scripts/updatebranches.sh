@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 for dir in $(ls)
   do
     cd $dir 2>>/dev/null
