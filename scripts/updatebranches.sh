@@ -1,3 +1,5 @@
+green() { echo "$(tput setaf 2)$*$(tput setaf 7)"; }
+
 for dir in $(ls)                            #For each directory
   do
     cd $dir 2>>/dev/null                    #cd into directory, hide errors
@@ -8,10 +10,10 @@ for dir in $(ls)                            #For each directory
         git checkout dev > /dev/null 2>&1   #Go to the dev branch
           if [[ $? -eq 0 ]]                 #If checkout is successful
             then
-              git pull -p                   #Update the dev branch, prune old branches
+              echo $(green $(git pull -p))  #Update the dev branch, prune old branches
             else
-              git checkout master /dev/null 2>&1
-              git pull -p
+              git checkout master > /dev/null 2>&1
+              echo $(green $(git pull -p))
           fi
     fi
     cd ..
