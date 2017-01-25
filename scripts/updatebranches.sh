@@ -3,7 +3,7 @@ green() { echo "$(tput setaf 2)$*$(tput setaf 7)"; }
 for dir in $(ls)                            #For each directory
   do
     cd $dir 2>>/dev/null                    #cd into directory, hide errors
-    if [[ -e ./.git ]]                      #If this is a git directory...
+    if [[ -d .git ]]                        #If this is a git directory...
       then
         echo "Updating "$dir
         git stash > /dev/null 2>&1          #Stash any changes there might be
@@ -15,6 +15,6 @@ for dir in $(ls)                            #For each directory
               git checkout master > /dev/null 2>&1
               echo $(green $(git pull -p))
           fi
+        cd ..
     fi
-    cd ..
   done
