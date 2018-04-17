@@ -1,3 +1,8 @@
+#!/usr/bin/env bash
+
+# When run in a folder containing multiple git repositories,
+# this script will checkout the "dev" branch and pull the latest changes.
+
 green() { echo "$(tput setaf 2)$*$(tput setaf 7)"; }
 
 for dir in $(ls)                            #For each directory
