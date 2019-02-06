@@ -11,12 +11,10 @@ for dir in $(ls)
 do
   if [[ -d ./$dir ]]
     then
-        cd $dir
+        cd $dir > /dev/null 2>&1
         branch_name=$(git symbolic-ref --short -q HEAD)
         #Prints "module_name: branch_name" with the branch name in green.
         echo $(white $dir)": "$(green $branch_name)
         cd ..
-    else
-        red $dir" is not a directory"
   fi
 done
