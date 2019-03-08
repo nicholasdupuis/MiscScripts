@@ -17,7 +17,7 @@ print_branch_name()
         echo $(white $dir)": "$(green $branch_name)
         cd ..
   fi
-} 2> /dev/null
+}
 
 for dir in $(ls)
 do
