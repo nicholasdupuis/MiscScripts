@@ -1,26 +1,37 @@
 #!/usr/bin/env bash
 
-# When this script is run in a folder containing multiple repositories,
-# it will print out what branch name each repository is currently on.
+# When run in a folder containing multiple git repositories,
+# this script will checkout the "dev" branch and pull the latest changes.
 
-red() { echo "$(tput setaf 1)$*$(tput setaf 7)"; }
-green() { echo "$(tput setaf 2)$*$(tput setaf 7)"; }
-white() { echo "$(tput setaf 7)$*$(tput setaf 7)"; }
-
-print_branch_name()
+# cd into a given directory and update dev branch, or master branch depending on the repo
+update_repo()
 {
-  if [[ -d ./$1 ]]
-    then
-        cd $1
-        branch_name=$(git symbolic-ref --short -q HEAD)
-        #Prints "module_name: branch_name" with the branch name in green.
-        echo $(white $dir)": "$(green $branch_name)
-        cd ..
-  fi
-}
+    cd $1                            
+        if [[ -d .git ]]              # If this is a git directory...
+        then
+            git stash                 # Stash any changes there might be
+            git checkout dev          # Go to the dev branch
+            if [[ $? -eq 0 ]]         # If checkout is successful
+                then
+                git pull -p           # Update the dev branch, prune old branches
+                else
+                git checkout master   # Checkout master if dev does not exist
+                git pull -p
+            fi
+            cd ..
+        fi
+} &> /dev/null
+
+#
+# Loop through the modules directory, spawning a new thread for each update, and wait
+# for all child processes to complete before finishing.
+# 
+echo "Updating repositories..."
 
 for dir in $(ls)
-do
-  print_branch_name $dir &
-done
-wait
+  do
+    update_repo $dir &
+  done
+  wait
+
+echo "Done!"
